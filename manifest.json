@@ -27,7 +27,7 @@
           "type": "image/png"
         }],
     "lang": "en-US",
-    "start_url": "/night-poem-2/index.html",
+    "start_url": "night-poem-2/index.html",
     "display": "standalone",
     "background_color": "white",
     "theme_color": "white"
