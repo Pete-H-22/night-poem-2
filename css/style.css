@@ -12,14 +12,48 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
+    background-color: black;
+    color: lightgray;
   }
   
   /* Center the content in the browser window */
   .container {
     margin: auto;
     text-align: center;
+    height: inherit;
+    width: inherit;
   }
   
   .title {
     font-size: 3rem;
+    grid-column: 1 / 11;
   }
+  
+  .parent {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-column-gap: 1px;
+    grid-row-gap: 1px;
+    height: inherit;
+    width: inherit;
+    max-width: 100vh;
+    margin: auto;
+    align-items: center;
+    }
+
+    .invis {
+      color: black;
+    }
+
+    .invis:hover {
+      color: lightgray;
+    }
+
+    .item {
+      
+    }
+
+    .i-1 {
+
+    }
