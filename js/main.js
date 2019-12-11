@@ -1,49 +1,183 @@
+
+window.stars_total = 0;
+
 window.onload = () => {
     'use strict';
-  
+
+    //registering SW for PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
                .register('./sw.js');
     }
 
+    //displaying warning for mobile users
+    if( navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i) ) {
+      $(".info-main, #close-button").css({"display":"none"});
+      $(".info-mobile").css({"display":"block"});
+    }
 
-    window.audio_1 = new Audio("tests/1.wav");
-    window.audio_2 = new Audio("tests/2.wav");
-    window.audio_3 = new Audio("tests/3.wav");
-    window.audio_4 = new Audio("tests/4.wav");
-
+    //setting initial conditions - empty sky 
+    window.dummy_list = [];
     window.audio_list = [];
+    new_sky();
+    $(".item").each(function(){
+      if ( $(this).html() == "star" ) {
+        $(this).html("add");
+        $(this).addClass("invis");
+      }
+    });    
+    list_create();
+};
 
-    
 
-    const stars_total = 400;
+// FUNCTION TO REFRESH THE WINDOW WITH A NEW RANDOMLY GENERATED VIEW OF THE SKY
+
+window.new_sky = function() {
+  window.stars_total = 0;
+  const threshold = Math.random();
+    console.log(threshold);
+    const items_total = 400;
     var i;
     var icon;
-    for (i=1; i<=stars_total; i++) {
-      var ran = Math.random();
-      if (ran < 0.1) {
+    var x_align;
+    var y_align;
+    
+    $(".parent").html('<div id="moon" class="title-container" draggable="true"><span class="material-icons title">brightness_3</span></div>');
+
+    for (i=1; i<=items_total; i++) {
+      var star_ran = Math.random();
+      var x_align = ((Math.random()*4)-2).toString()+"em";
+      var y_align = ((Math.random()*4)-2).toString()+"em";
+      if (star_ran < threshold) {
         icon = "star";
       } else {
         icon = "add";
       }
 
       if (icon == "star") {
-        $(".parent").append("<div class='material-icons item i-"+i+"'>"+icon+"</div>");
+        $(".parent").append("<div style='visibility:hidden; left:"+x_align+"; top:"+y_align+"' class='material-icons item i-"+i+"'>"+icon+"</div>");
       } else {
-        $(".parent").append("<div class='material-icons item invis i-"+i+"'>"+icon+"</div>");
+        $(".parent").append("<div style='left:"+x_align+"; top:"+y_align+"' class='material-icons item invis i-"+i+"'>"+icon+"</div>");
       }
     }
 
-    list_create();
+    $(".item").each(function(){
+      if (
+          $(this).position().top+$(this).height() >= $(".title-container").position().top
+          &&
+          $(this).position().top <= $(".title-container").position().top+$(".title-container").height()
+          &&
+          $(this).position().left <= $(".title-container").position().left+$(".title-container").width()
+          &&
+          $(this).position().left+$(this).width() >= $(".title-container").position().left+$(".title-container").width()
+      ) {
+          $(this).css({"visibility":"hidden"});    
+      } else {
+          $(this).css({"visibility":"visible"}); 
+      }
+    })
+};
 
-  }
+
+
+//FUNCTION FOR CREATING THE ARRAY OF AUDIO FILES TO PLAY
 
 window.list_create = function() {
-  audio_list = [];
+  window.audio_list = [];
+  window.dummy_list = [];
   console.log("audio_list empty");
-  audio_list = [audio_1,audio_2,audio_3,audio_4];
+
+  $(".item").each(function(){
+    if ($(this).html() == "star") {
+      window.dummy_list.push(1);
+    } else {
+      window.dummy_list.push(0);
+    }
+  });
+  window.stars_total = 0;
+  for (s in window.dummy_list) {
+    window.stars_total = window.stars_total + window.dummy_list[s];
+  }
+
+  audio_list = poem_constructor();
+
   console.log("audio_list repopulated");
+  console.log(window.dummy_list);
+  console.log(window.stars_total);
 };
+
+
+// FUNCTION TO STOP ALL AUDIO PLAYING
+
+window.stop_all = function() {
+  for (a in audio_list) {
+    audio_list[a].pause();
+    audio_list[a].currentTime = 0;
+  }
+  $("#stop-button").css({"visibility":"hidden"});
+}
+
+
+// FUNCTION TO CONSTRUCT THE CORRECT VERSION OF THE POEM BASED ON THE SKY
+
+window.poem_constructor = function() {
+  console.log("POEM CONSTRUCTOR");
+
+  // gathering some information about the sky
+
+  //using the dummy_list array index of each star to create a ID number for the sky
+  index_total = 0;
+  for (d in dummy_list) {
+    if (dummy_list[d] == 1) {
+      index_total = index_total + parseInt(d)+1;
+    }
+  }
+
+  //determining 'main verse' in first part of poem
+  if (window.stars_total == 0) {
+    return [empty[1]]; // for empty sky
+  }
+  else if (window.stars_total < 200) {
+    main_verse = index_total%5; // for few stars
+  } else {
+    main_verse = (index_total%5) + 5; // for many stars
+  }
+
+
+
+
+//returning the correct audio as an array
+return    [
+          lines[0][main_verse][(window.stars_total%3)][1],
+          lines[1][main_verse][0][1],
+          lines[1][(Math.floor(window.stars_total/40))][1][1],
+          lines[1][main_verse][2][1],
+          lines[lines.length-1][0][1], // Pause 1
+          lines[2][Math.floor(Math.random()*lines[2].length)][1],
+          lines[3][Math.floor(Math.random()*lines[3].length)][1],
+          lines[4][Math.floor(Math.random()*lines[4].length)][1],
+          lines[5][Math.floor(Math.random()*lines[5].length)][1], 
+          lines[6][Math.floor(Math.random()*lines[6].length)][1],
+          lines[7][Math.floor(Math.random()*lines[7].length)][1],
+          lines[8][Math.floor(Math.random()*lines[8].length)][1],
+          lines[9][Math.floor(Math.random()*lines[9].length)][1],
+          lines[10][Math.floor(Math.random()*lines[10].length)][1],
+          lines[lines.length-1][1][1], // Pause 2
+          lines[11][Math.floor(Math.random()*lines[11].length)][1],
+          lines[12][Math.floor(Math.random()*lines[12].length)][1],
+          lines[13][Math.floor(Math.random()*lines[13].length)][1]
+          ];
+
+};
+
+
+// STAR CLICK EVENT
 
 $(document).on("click",".item",function(){
   console.log("*");
@@ -54,52 +188,86 @@ $(document).on("click",".item",function(){
     $(this).html("star");
     $(this).removeClass("invis");
   }
-
-  window.list_create();
 });
 
-$(".title").mouseenter(function(){
+
+// MOON PLAY/PAUSE ETC EVENTS
+
+$(document).on("mouseenter",".title",function(){
   $(this).html("play_arrow");
 });
 
-$(".title").mouseout(function(){
+$(document).on("mouseleave",".title",function(){
   $(this).html("brightness_3");
 });
 
-$(".title").click(function(){
+$(document).on("click",".title",function(){
+  stop_all();
 
-  // audio_1.onended = function(){
-  //   audio_2.play();
-  // }
+  window.list_create();
 
-  // audio_2.onended = function(){
-  //   audio_3.play();
-  // }
-
-  // audio_3.onended = function(){
-  //   audio_4.play();
-  // }
-
-  // for (let i = 1; i < 4; i++) {
-  //   console.log(i);
-  //   console.log(window["audio_"+i]);
-  //   window["audio_"+i].addEventListener("ended", function(){
-  //     console.log("-> " + (i+1));
-  //     //console.log(window["audio_"+(i+1)]);
-  //     window["audio_"+(i+1)].play();
-  //   });
-  // }
-
-  for (let i = 0; i < (audio_list.length-1); i++) {
-    console.log(i);
-    console.log(audio_list[i]);
-    audio_list[i].addEventListener("ended", function(){
-      console.log("-> " + (i+1));
-      //console.log(window["audio_"+(i+1)]);
-      audio_list[i+1].play();
-    });
+  $("#stop-button").css({"visibility":"visible"});
+  
+  if (audio_list.length == 1) {
+    console.log("empty!");
+    audio_list[0].addEventListener("ended", function(){
+      console.log("stop button gone!");
+      $("#stop-button").css({"visibility":"hidden"});
+    })
   }
 
-  //audio_1.play();
-  audio_list[0].play();
+  for (let i = 0; i < (audio_list.length-1); i++) {
+    audio_list[i].addEventListener("ended", function(){
+      console.log("-> " + (i+1));
+      audio_list[i+1].play();
+    });
+    if (i == audio_list.length-2) {
+      audio_list[i].addEventListener("ended", function(){
+        $("#stop-button").css({"visibility":"hidden"});
+      })
+    }
+  }
+
+  audio_list[0].play(); 
+
+});
+
+
+//TOOLBAR AND WINDOW BUTTON EVENTS
+
+$("#info-button").click(function(){
+  $(".overlay").css({"display":"block"});
+});
+
+$("#close-button").click(function(){
+  $(".overlay").css({"display":"none"});
+});
+
+$("#reveal-button").mousedown(function(){
+  console.log("mouse down");
+  $(".invis").each(function(){
+    $(this).addClass("fake-hover");
+  })
+});
+$("#reveal-button").mouseleave(function(){
+  console.log("mouse up");
+  $(".invis").each(function(){
+    $(this).removeClass("fake-hover");
+  })
+});
+$("#reveal-button").mouseup(function(){
+  console.log("mouse up");
+  $(".invis").each(function(){
+    $(this).removeClass("fake-hover");
+  })
+});
+
+$("#new-sky-button").click(function(){
+  window.stop_all();
+  window.new_sky();
+  window.list_create();
+});
+
+$("#stop-button").click(function(){
+  window.stop_all();
 });

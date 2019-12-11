@@ -19,12 +19,33 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body class="fullscreen">
+  
   <div class="container">
     <div class="parent">
-      <div class="title-container"><span class="material-icons title">brightness_3</span></div>
+      <div id="moon" class="title-container" draggable="true"><span class="material-icons title">brightness_3</span></div>
+    </div>
+    <div class="toolbar">
+      <!--
+      <button id="all-button">All stars</button>
+      <button id="none-button">No stars</button>
+      -->
+      <button id="new-sky-button">New sky</button>
+      <button id="reveal-button">Reveal stars</button>
+      <button id="info-button">About</button>
+      <button id="stop-button">Stop</button>
     </div>
   </div>
+  <div class="overlay">
+        <div class="info-box">
+          <p class="info-title">forgotten nights</p>
+          <p>&nbsp;</p>
+          <p class="info-mobile">This site is designed for desktop computers and is unsuitable for touchscreens. Please visit from a different device.</p>
+          <p class="info-main">This is a poem about the night sky, the power it holds over our memory and the fascination that it has held for us for millenia. <br/><br/> Clicking on the moon will start the poem playing. The poem that you hear will depend on the number and position of the stars. Click on a star to remove it from the sky. Add new stars by hovering over an empty space to see if a star can be added there. Each change to the night sky will alter one or more lines of the poem. The toolbar at the bottom of the screen can help you in crafting the starscape. <br/><br/> This poem was inspired by the work of Philip Gross and by Stephanie Strickland's <em>V</em> series of books and digital poems. <br/><br/> For those who ae interested in seeing the code behind this project, or who want adapt/rewrite it themselves, the whole thing is available on GitHub. You can also contact me with any questions at p.a.hebden[at]ncl.ac.uk <br/><br/> <strong>Peter Hebden, 2019</strong></p>
+          <button id="close-button">Close</button>
+        </div>
+    </div>
   <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/lines.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
