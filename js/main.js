@@ -1,3 +1,14 @@
+//displaying warning for mobile users
+if( navigator.userAgent.match(/Android/i)
+|| navigator.userAgent.match(/webOS/i)
+|| navigator.userAgent.match(/iPhone/i)
+|| navigator.userAgent.match(/iPad/i)
+|| navigator.userAgent.match(/iPod/i)
+|| navigator.userAgent.match(/BlackBerry/i)
+|| navigator.userAgent.match(/Windows Phone/i) ) {
+$(".info-main, #close-button").css({"display":"none"});
+$(".info-mobile").css({"display":"block"});
+}
 
 window.stars_total = 0;
 
@@ -8,18 +19,6 @@ window.onload = () => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
                .register('./sw.js');
-    }
-
-    //displaying warning for mobile users
-    if( navigator.userAgent.match(/Android/i)
-        || navigator.userAgent.match(/webOS/i)
-        || navigator.userAgent.match(/iPhone/i)
-        || navigator.userAgent.match(/iPad/i)
-        || navigator.userAgent.match(/iPod/i)
-        || navigator.userAgent.match(/BlackBerry/i)
-        || navigator.userAgent.match(/Windows Phone/i) ) {
-      $(".info-main, #close-button").css({"display":"none"});
-      $(".info-mobile").css({"display":"block"});
     }
 
     //setting initial conditions - empty sky 
@@ -69,13 +68,13 @@ window.new_sky = function() {
 
     $(".item").each(function(){
       if (
-          $(this).position().top+$(this).height() >= $(".title-container").position().top
+          $(this).position().top+$(this).height() >= $(".title-container").position().top-10
           &&
-          $(this).position().top <= $(".title-container").position().top+$(".title-container").height()
+          $(this).position().top <= $(".title-container").position().top+$(".title-container").height()+10
           &&
-          $(this).position().left <= $(".title-container").position().left+$(".title-container").width()
+          $(this).position().left <= $(".title-container").position().left+$(".title-container").width()+10
           &&
-          $(this).position().left+$(this).width() >= $(".title-container").position().left+$(".title-container").width()
+          $(this).position().left+$(this).width() >= $(".title-container").position().left-10
       ) {
           $(this).css({"visibility":"hidden"});    
       } else {

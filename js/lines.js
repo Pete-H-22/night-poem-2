@@ -111,7 +111,7 @@ lines =
     //SECOND VERSE - LINE 1
     //[2]
     [
-        ["Ladies and gentlemen,",new Audio("sound/200.m4a")],
+        ["Ladies and gentlemen,",new Audio("sound/200.m4a")], //*
         ["Listen son,",new Audio("sound/210.m4a")],
         ["Stern-eyed girl,",new Audio("sound/220.m4a")],
         ["My dear friend,",new Audio("sound/230.m4a")]
@@ -176,7 +176,7 @@ lines =
     [
         ["what I was saying",new Audio("sound/a00.m4a")],
         ["even the tiniest things",new Audio("sound/a10.m4a")],
-        ["the rough grain of our history",new Audio("sound/a20.m4a")] //*to add
+        ["the rough grain of our history",new Audio("sound/a20.m4a")] 
     ],
     //SECOND VERSE - LINE 10
     //[11]
@@ -196,7 +196,7 @@ lines =
     [
         ["the chill of the last few minutes",new Audio("sound/d00.m4a")],
         ["all of the weight the stars pass down",new Audio("sound/d10.m4a")],
-        ["so many moments I want to forget",new Audio("sound/d20.m4a")] // *to add
+        ["so many moments I want to forget",new Audio("sound/d20.m4a")] 
     ],
     //PAUSES
     [
