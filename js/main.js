@@ -51,8 +51,10 @@ window.new_sky = function() {
 
     for (i=1; i<=items_total; i++) {
       var star_ran = Math.random();
-      var x_align = ((Math.random()*4)-2).toString()+"em";
-      var y_align = ((Math.random()*4)-2).toString()+"em";
+      var x_align = ((Math.random()*5)-2).toString()+"em";
+      var y_align = ((Math.random()*5)-2).toString()+"em";
+      var star_size = ((Math.random()*0.4)+0.3).toString()+"em";
+      var add_size = "0.6em"
       if (star_ran < threshold) {
         icon = "star";
       } else {
@@ -60,21 +62,21 @@ window.new_sky = function() {
       }
 
       if (icon == "star") {
-        $(".parent").append("<div style='visibility:hidden; left:"+x_align+"; top:"+y_align+"' class='material-icons item i-"+i+"'>"+icon+"</div>");
+        $(".parent").append("<div style='visibility:hidden; font-size:"+star_size+"; left:"+x_align+"; top:"+y_align+"' class='material-icons item i-"+i+"'>"+icon+"</div>");
       } else {
-        $(".parent").append("<div style='left:"+x_align+"; top:"+y_align+"' class='material-icons item invis i-"+i+"'>"+icon+"</div>");
+        $(".parent").append("<div style='font-size:"+add_size+"; left:"+x_align+"; top:"+y_align+"' class='material-icons item invis i-"+i+"'>"+icon+"</div>");
       }
     }
 
     $(".item").each(function(){
       if (
-          $(this).position().top+$(this).height() >= $(".title-container").position().top-10
+          $(this).position().top+$(this).height() >= $(".title-container").position().top-5
           &&
-          $(this).position().top <= $(".title-container").position().top+$(".title-container").height()+10
+          $(this).position().top <= $(".title-container").position().top+$(".title-container").height()+5
           &&
-          $(this).position().left <= $(".title-container").position().left+$(".title-container").width()+10
+          $(this).position().left <= $(".title-container").position().left+$(".title-container").width()+5
           &&
-          $(this).position().left+$(this).width() >= $(".title-container").position().left-10
+          $(this).position().left+$(this).width() >= $(".title-container").position().left-5
       ) {
           $(this).css({"visibility":"hidden"});    
       } else {
