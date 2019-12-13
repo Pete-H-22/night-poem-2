@@ -47,7 +47,7 @@ window.new_sky = function() {
     var x_align;
     var y_align;
     
-    $(".parent").html('<div id="moon" class="title-container" draggable="true"><span class="material-icons title">brightness_3</span></div>');
+    $(".parent").html('<div id="moon" class="title-container" draggable="true"><a id="title-click" href="#"><span class="material-icons title">brightness_3</span></a></div>');
 
     for (i=1; i<=items_total; i++) {
       var star_ran = Math.random();
@@ -132,11 +132,20 @@ window.poem_constructor = function() {
 
   // gathering some information about the sky
 
-  //using the dummy_list array index of each star to create a ID number for the sky
+  //using the dummy_list array index of each star to create a ID number for the sky, plus other 'stats' generating lines
   index_total = 0;
+  upper_seg = 0; // number of stars in top half of sky
+  lower_seg = 0; // ... and lower half
+
   for (d in dummy_list) {
     if (dummy_list[d] == 1) {
       index_total = index_total + parseInt(d)+1;
+
+      if (parseInt(d) < 200) {
+        upper_seg = upper_seg +1;
+      } else {
+        lower_seg = lower_seg +1;
+      }
     }
   }
 
@@ -160,19 +169,19 @@ return    [
           lines[1][(Math.floor(window.stars_total/40))][1][1],
           lines[1][main_verse][2][1],
           lines[lines.length-1][0][1], // Pause 1
-          lines[2][Math.floor(Math.random()*lines[2].length)][1],
-          lines[3][Math.floor(Math.random()*lines[3].length)][1],
-          lines[4][Math.floor(Math.random()*lines[4].length)][1],
-          lines[5][Math.floor(Math.random()*lines[5].length)][1], 
-          lines[6][Math.floor(Math.random()*lines[6].length)][1],
-          lines[7][Math.floor(Math.random()*lines[7].length)][1],
-          lines[8][Math.floor(Math.random()*lines[8].length)][1],
-          lines[9][Math.floor(Math.random()*lines[9].length)][1],
-          lines[10][Math.floor(Math.random()*lines[10].length)][1],
+          lines[2][Math.floor(window.stars_total/100)][1],
+          lines[3][window.stars_total%4][1],
+          lines[4][upper_seg%4][1],
+          lines[5][index_total%3][1], 
+          lines[6][Math.floor(lower_seg/40)][1],
+          lines[7][index_total%5][1],
+          lines[8][Math.floor(upper_seg/50)][1],
+          lines[9][window.stars_total%2][1],
+          lines[10][main_verse%3][1],
           lines[lines.length-1][1][1], // Pause 2
-          lines[11][Math.floor(Math.random()*lines[11].length)][1],
-          lines[12][Math.floor(Math.random()*lines[12].length)][1],
-          lines[13][Math.floor(Math.random()*lines[13].length)][1]
+          lines[11][window.stars_total%3][1],
+          lines[12][index_total%2][1],
+          lines[13][index_total%3][1]
           ];
 
 };
@@ -202,7 +211,7 @@ $(document).on("mouseleave",".title",function(){
   $(this).html("brightness_3");
 });
 
-$(document).on("click",".title",function(){
+$(document).on("click","#title-click",function(){
   stop_all();
 
   window.list_create();
