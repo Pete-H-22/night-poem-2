@@ -12,25 +12,30 @@ $(".info-mobile").css({"display":"block"});
 
 window.stars_total = 0;
 
+//initial setup
 window.onload = () => {
     'use strict';
 
-    //registering SW for PWA
+    //registering service worker for PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
                .register('./sw.js');
     }
 
     //setting initial conditions - empty sky 
-    window.dummy_list = [];
-    window.audio_list = [];
+    window.dummy_list = []; //array listing stars and empty spaces
+    window.audio_list = []; //array of audio files to play
+    
     new_sky();
+
+    //clearing sky to start with empty screen
     $(".item").each(function(){
       if ( $(this).html() == "star" ) {
         $(this).html("add");
         $(this).addClass("invis");
       }
-    });    
+    });
+
     list_create();
 };
 
@@ -47,8 +52,10 @@ window.new_sky = function() {
     var x_align;
     var y_align;
     
+    //adding moon button
     $(".parent").html('<div id="moon" class="title-container" draggable="true"><a id="title-click" href="#"><span class="material-icons title">brightness_3</span></a></div>');
 
+    //determining each star position/size and adding to grid
     for (i=1; i<=items_total; i++) {
       var star_ran = Math.random();
       var x_align = ((Math.random()*5)-2).toString()+"em";
@@ -68,6 +75,7 @@ window.new_sky = function() {
       }
     }
 
+    //preventing overlap with moon button
     $(".item").each(function(){
       if (
           $(this).position().top+$(this).height() >= $(".title-container").position().top-5

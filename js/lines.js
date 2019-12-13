@@ -207,9 +207,9 @@ lines =
 
 empty = ["This is a memory machine | it runs on nothing | pulling old nights out of empty space | inventing remembering | remembering inventing | a map of betweens | where all the best fantasies are memories",new Audio("sound/empty.m4a")];
 
-pause_1 = [" ",new Audio("sound/pause.m4a")];
-pause_2 = [" ",new Audio("sound/pause.m4a")];
+//pause_1 = [" ",new Audio("sound/pause.m4a")];
+//pause_2 = [" ",new Audio("sound/pause.m4a")];
 
 
-
+// EXAMPLE OUTPUT (text)
 // This is a pacing memory | when the lights should all be out | when we spoke down cables for hours | when sleep was always another half-hour away | My dear friend, | A girl I knew wanted to be standing on the sky | to look up whenever there are questions | Now, watch: | This map of sparks | though vast, is mostly empty space | With you here | I remember | what I was saying | and | I hold onto | the chill of the last few minutes
